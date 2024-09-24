@@ -1,0 +1,219 @@
+{
+	"info": {
+		"_postman_id": "199adb08-daa9-458d-b83c-5fd88b096fc3",
+		"name": "CRUD API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30536567"
+	},
+	"item": [
+		{
+			"name": "Fetch all people",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3002/people"
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch one person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body conatins John Doe\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"John Doe\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Job property is Software Engineer\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.job).to.eql(\"Software Engineer\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3002/people/:person_id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"people",
+						":person_id"
+					],
+					"variable": [
+						{
+							"key": "person_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body includes name\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Kimi Raikkonen\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"dob\": \"17/10/1979\",\r\n    \"fullName\": \"Kimi Raikkonen\",\r\n    \"id\": \"77\",\r\n    \"job\": \"F1 Driver\",\r\n    \"email\": \"kimi.raikonen@f1.com\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3002/people"
+			},
+			"response": []
+		},
+		{
+			"name": "Update person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains updated email address\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"kimi.raikkonen@f1.com\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"dob\": \"17/10/1979\",\r\n    \"fullName\": \"Kimi Raikkonen\",\r\n    \"id\": \"77\",\r\n    \"job\": \"F1 Driver\",\r\n    \"email\": \"kimi.raikkonen@f1.com\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3002/people/:person_id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"people",
+						":person_id"
+					],
+					"variable": [
+						{
+							"key": "person_id",
+							"value": "77"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body confirms deletion\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Person deleted\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3002/people/:person_id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"people",
+						":person_id"
+					],
+					"variable": [
+						{
+							"key": "person_id",
+							"value": "77"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
